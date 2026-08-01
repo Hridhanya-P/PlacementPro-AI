@@ -68,3 +68,63 @@ button{
 button:hover{
     background:#1d4ed8;
 }
+
+.login-container{
+
+    width:420px;
+
+    margin:100px auto;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+    text-align:center;
+
+}
+
+.login-container h1{
+
+    margin-bottom:10px;
+
+}
+
+.login-container p{
+
+    margin-bottom:30px;
+
+    color:gray;
+
+}
+
+form{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+input{
+
+    padding:15px;
+
+    margin-bottom:20px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+}
+
+.login-container button{
+
+    width:100%;
+
+}

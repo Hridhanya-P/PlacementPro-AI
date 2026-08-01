@@ -1,0 +1,51 @@
+.dashboard{
+
+    width:90%;
+
+    margin:60px auto;
+
+    text-align:center;
+
+}
+
+.cards{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    margin-top:50px;
+
+}
+
+.card{
+
+    background:white;
+
+    width:220px;
+
+    padding:40px;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.1);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+.card h2{
+
+    margin:20px 0;
+
+    font-size:35px;
+
+}

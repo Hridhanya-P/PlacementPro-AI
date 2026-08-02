@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>DSA Progress</title>
+
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='css/global.css') }}">
+
+    <link rel="stylesheet"
+      href="{{ url_for('static', filename='css/progress.css') }}">
+
+</head>
+
+<body>
+
+<div class="progress-container">
+
+    <h1>DSA Progress 📚</h1>
+
+    <table>
+
+        {% for topic in topics %}
+
+
+        <tr>
+            
+            <td>{{ topic.topic }}</td>
+            
+            <td>
+
+            {% if topic.completed %}
+
+            <span class="completed">✅ Completed</span>
+
+            {% else %}
+
+            <span class="pending">❌ Pending</span>
+
+            <a href="{{ url_for('complete', id=topic.id) }}">
+                <button class="complete-btn">Complete</button>
+            </a>
+
+        {% endif %}
+
+        </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+
+</html>

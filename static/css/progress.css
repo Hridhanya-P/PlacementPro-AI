@@ -1,0 +1,68 @@
+.progress-container{
+    width:80%;
+    margin:60px auto;
+    text-align:center;
+}
+
+.progress-container h1{
+    margin-bottom:30px;
+}
+
+table{
+    width:70%;
+    margin:auto;
+    border-collapse:collapse;
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 10px 20px rgba(0,0,0,.1);
+}
+
+th{
+    background:#2563eb;
+    color:white;
+    padding:18px;
+}
+
+td{
+    padding:18px;
+    border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+.completed{
+    color:green;
+    font-weight:bold;
+}
+
+.pending{
+    color:red;
+    font-weight:bold;
+}
+
+.complete-btn{
+
+    margin-left:20px;
+
+    background:#22c55e;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.complete-btn:hover{
+
+    background:#16a34a;
+
+}

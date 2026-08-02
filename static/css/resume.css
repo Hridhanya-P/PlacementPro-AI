@@ -1,0 +1,66 @@
+.resume-container{
+
+    width:500px;
+    margin:80px auto;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+    text-align:center;
+
+}
+
+.resume-container h1{
+
+    margin-bottom:15px;
+
+}
+
+.resume-container p{
+
+    color:gray;
+
+    margin-bottom:25px;
+
+}
+
+.resume-container input{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-bottom:20px;
+
+}
+
+.resume-container button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    background:#2563eb;
+
+    color:white;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+}
+
+.resume-container button:hover{
+
+    background:#1d4ed8;
+
+}

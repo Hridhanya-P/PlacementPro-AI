@@ -1,0 +1,78 @@
+.analysis-box{
+
+    width:700px;
+    margin:60px auto;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.analysis-box h1{
+
+    text-align:center;
+    margin-bottom:30px;
+
+}
+
+.good{
+
+    background:#d1fae5;
+    color:#065f46;
+
+    padding:15px;
+    margin:15px 0;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+}
+
+.bad{
+
+    background:#fee2e2;
+    color:#991b1b;
+
+    padding:15px;
+    margin:15px 0;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+}
+
+.score-card{
+    text-align:center;
+    background:#2563eb;
+    color:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:30px;
+}
+
+.score-card h2{
+    margin:0;
+}
+
+.score-card h1{
+    margin-top:10px;
+    font-size:50px;
+}
+
+.progress-bar{
+    width:100%;
+    height:20px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.progress{
+    height:100%;
+    background:#2563eb;
+    border-radius:20px;
+}

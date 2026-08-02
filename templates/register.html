@@ -2,17 +2,16 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Register</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+          href="{{ url_for('static', filename='css/global.css') }}">
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/register.css') }}">
 </head>
 
 <body>
@@ -23,23 +22,31 @@
 
     <p>Start your placement journey today.</p>
 
-    <form>
+    <form method="POST">
 
         <input
             type="text"
-            placeholder="Full Name">
+            name="name"
+            placeholder="Full Name"
+            required>
 
         <input
             type="email"
-            placeholder="Email">
+            name="email"
+            placeholder="Email"
+            required>
 
         <input
             type="password"
-            placeholder="Password">
+            name="password"
+            placeholder="Password"
+            required>
 
         <input
             type="password"
-            placeholder="Confirm Password">
+            name="confirm_password"
+            placeholder="Confirm Password"
+            required>
 
         <button>
 

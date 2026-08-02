@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Analyzer{% endblock %}
+
+{% block content %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/resume.css') }}">
+{% endblock %}
+
+<div class="resume-container">
+
+    <h1>📄 Resume Analyzer</h1>
+
+    <p>Upload your resume and get an AI analysis.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="resume" accept=".pdf">
+
+        <button type="submit">
+            Analyze Resume
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

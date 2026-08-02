@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Analysis{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/analysis.css') }}">
+
+<div class="analysis-box">
+
+    <div class="score-card">
+        <h2>Resume Score</h2>
+        <h1>{{ score }}/100</h1>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" style="width: {{ score }}%;">
+        </div>
+    </div>
+
+    <h1>📄 Resume Analysis Report</h1>
+
+    {% for item in analysis %}
+
+        {% if "✅" in item %}
+            <div class="good">{{ item }}</div>
+        {% else %}
+            <div class="bad">{{ item }}</div>
+        {% endif %}
+
+    {% endfor %}
+
+    <h2>💡 AI Suggestions</h2>
+
+    {% for suggestion in suggestions %}
+        <div class="bad">{{ suggestion }}</div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

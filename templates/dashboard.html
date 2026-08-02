@@ -21,7 +21,19 @@
 
 <div class="dashboard">
 
-    <h1>Welcome, Hridhanya 👋</h1>
+    <div class="top-bar">
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
+
+    <a href="{{ url_for('progress') }}">
+    <button>View DSA Progress</button>
+    </a>
+
+    <a href="{{ url_for('resume') }}">
+    <button>Resume Analyzer</button>
+    </a>
+
+    <h1>Welcome, {{ name }} 👋</h1>
 
     <p>Your AI Placement Companion</p>
 
@@ -29,19 +41,19 @@
 
         <div class="card">
             🔥
-            <h2>12</h2>
-            <p>Day Streak</p>
+            <h2>{{ completed }}</h2>
+            <p>Completed Topics</p>
         </div>
 
         <div class="card">
             ⭐
-            <h2>1250</h2>
+            <h2>{{ xp }}</h2>
             <p>XP</p>
         </div>
 
         <div class="card">
             🏆
-            <h2>5</h2>
+            <h2>{{ level }}</h2>
             <p>Level</p>
         </div>
 

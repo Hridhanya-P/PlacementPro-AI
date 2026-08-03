@@ -1,70 +1,152 @@
 .dashboard{
-
     width:90%;
-
-    margin:60px auto;
-
+    max-width:1200px;
+    margin:80px auto 40px;
     text-align:center;
-
 }
 
 .cards{
-
-    display:flex;
-
+    display:grid;
+    grid-template-columns:repeat(3, 220px);
     justify-content:center;
-
-    gap:30px;
-
-    margin-top:50px;
-
+    gap:25px;
+    margin-top:40px;
 }
 
 .card{
+    width:240px;
+    min-height:180px;
+    max-width:220px;
+    height:180px;
 
     background:white;
+    border-radius:18px;
 
-    width:220px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 
-    padding:40px;
-
-    border-radius:15px;
-
-    box-shadow:0 10px 20px rgba(0,0,0,.1);
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
 
     transition:.3s;
-
 }
 
-.card:hover{
-
-    transform:translateY(-10px);
-
+.dashboard h1{
+    margin-top:40px;
+    font-size:48px;
+    color:#1e293b;
 }
 
-.card h2{
+.dashboard p{
+    font-size:22px;
+    color:#666;
+}
 
-    margin:20px 0;
+.actions{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin:40px 0;
+}
 
-    font-size:35px;
+.action-btn{
+    text-decoration:none;
+    background:#2563eb;
+    color:white;
 
+    padding:16px 30px;
+
+    border-radius:12px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    transition:.3s;
 }
 
 .top-bar{
     display:flex;
     justify-content:flex-end;
-    margin-bottom:30px;
+    margin-bottom:20px;
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.03);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.18);
+}
+
+.card h2{
+    color:#2563eb;
+    margin:10px 0;
+    font-size:30px;
+}
+
+.card p{
+    color:#666;
+    font-size:16px;
+}
+
+.actions{
+    margin-top:40px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+}
+
+.action-btn{
+    text-decoration:none;
+    background:#2563eb;
+    color:white;
+    padding:14px 28px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.action-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(37,99,235,.35);
 }
 
 .logout-btn{
     background:#ef4444;
     color:white;
-    padding:10px 18px;
-    border-radius:8px;
+    padding:12px 25px;
+    border-radius:10px;
     text-decoration:none;
-    font-weight:bold;
+    font-weight:600;
+    transition:.3s;
 }
 
 .logout-btn:hover{
     background:#dc2626;
 }
+
+footer{
+    text-align:center;
+    margin-top:60px;
+    margin-bottom:20px;
+    color:#666;
+    font-size:15px;
+}
+
+.quick-stats{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin:25px 0;
+    font-size:18px;
+    font-weight:600;
+}
+
+.card-icon{
+    font-size:32px;
+    color:#2563eb;
+    margin-bottom:15px;
+}
+

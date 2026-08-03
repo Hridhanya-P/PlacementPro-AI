@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Analytics{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/charts.css') }}">
+
+<div class="chart-box">
+
+    <h1>📊 Resume Analytics</h1>
+
+    <div class="chart-container">
+        <canvas id="scoreChart"></canvas>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const score = Number("{{ score }}");
+const ats = Number("{{ ats_score }}");
+
+const ctx = document.getElementById("scoreChart");
+
+new Chart(ctx,{
+    type:"bar",
+
+    data:{
+        labels:["Resume Score","ATS Score"],
+
+        datasets:[{
+            label:"Score",
+            data:[score, ats],
+            backgroundColor:[
+                "#2563eb",
+                "#16a34a"
+            ],
+            borderRadius:10
+        }]
+    },
+
+    options:{
+        responsive:true,
+        scales:{
+            y:{
+                beginAtZero:true,
+                max:100
+            }
+        }
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,10 +1,14 @@
+from flask import send_file
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 import pdfplumber
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, session
-from models import db, User, Progress
+from models import db, User, Progress, ResumeReport
 
 app = Flask(__name__)
+latest_report = {}
 app.secret_key = "placementpro_secret"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///placementpro.db"
@@ -67,16 +71,29 @@ def register():
 def dashboard():
 
     completed = Progress.query.filter_by(completed=True).count()
-
     xp = completed * 100
-
     level = (xp // 500) + 1
+
+    uploads = ResumeReport.query.count()
+
+    reports = ResumeReport.query.all()
+
+    if uploads > 0:
+        average = sum(r.score for r in reports) // uploads
+        best_ats = max(r.ats_score for r in reports)
+    else:
+        average = 0
+        best_ats = 0
 
     return render_template(
         "dashboard.html",
+        name=session["user_name"],
+        completed=completed,
         xp=xp,
         level=level,
-        completed=completed
+        uploads=uploads,
+        average=average,
+        best_ats=best_ats
     )
 
 @app.route("/logout")
@@ -136,27 +153,33 @@ def resume():
 
             text = text.upper()
 
-            analysis = []
-            suggestions = []
-            score = 0
-
             skills = [
-                "PYTHON",
-                "JAVA",
+                "Python",
+                "Java",
                 "C",
                 "C++",
                 "HTML",
                 "CSS",
-                "JAVASCRIPT",
-                "REACT",
-                "FLASK",
+                "JavaScript",
+                "React",
+                "Flask",
                 "SQL",
-                "GIT",
-                "GITHUB",
-                "FIGMA",
-                "MACHINE LEARNING",
-                "DATA SCIENCE"
+                "Git",
+                "GitHub",
+                "Figma",
+                "Machine Learning",
+                "Data Science"
             ]
+
+            score = 0
+            analysis = []
+
+            for skill in skills:
+                if skill.lower() in text.lower():
+                    analysis.append(f"✅ {skill} Found")
+                    score += 5
+                else:
+                    analysis.append(f"❌ {skill} Missing")
 
             sections = [
                 "PROJECTS",
@@ -174,59 +197,182 @@ def resume():
                 else:
                     analysis.append(f"❌ {section.title()} Section Missing")
 
-            for skill in skills:
-
-                if skill in text:
-                    analysis.append(f"✅ {skill.title()} Found")
-                    score += 5
-                else:
-                    analysis.append(f"❌ {skill.title()} Missing")
-                    suggestions.append(f"Learn {skill.title()}.")
-
-            if "PROJECT" in text:
-                analysis.append("✅ Projects Section Found")
-                score += 10
+            if "github.com" in text.lower():
+                analysis.append("✅ GitHub Profile Found")
             else:
-                analysis.append("❌ Projects Section Missing")
-                suggestions.append("Add at least 2 projects.")
+                analysis.append("❌ GitHub Profile Missing")
 
-            if "INTERNSHIP" in text:
-                analysis.append("✅ Internship Experience Found")
-                score += 10
+            if "linkedin.com" in text.lower():
+                analysis.append("✅ LinkedIn Profile Found")
             else:
-                analysis.append("❌ Internship Experience Missing")
-                suggestions.append("Add internship experience.")
+                analysis.append("❌ LinkedIn Profile Missing")
 
-            if "CERTIFICATION" in text or "CERTIFICATIONS" in text:
-                analysis.append("✅ Certifications Found")
-                score += 10
-            else:
-                analysis.append("❌ Certifications Missing")
-                suggestions.append("Add certifications.")
+            suggestions = []
 
-            if "GITHUB" in text:
-                analysis.append("✅ GitHub Profile Mentioned")
-            else:
-                suggestions.append("Add GitHub profile link.")
+            if "java" not in text.lower():
+                suggestions.append("Learn Java.")
 
-            if "LINKEDIN" in text:
-                analysis.append("✅ LinkedIn Profile Mentioned")
-            else:
+            if "react" not in text.lower():
+                suggestions.append("Learn React.")
+
+            if "javascript" not in text.lower():
+                suggestions.append("Learn JavaScript.")
+
+            if "sql" not in text.lower():
+                suggestions.append("Add SQL.")
+
+            if "github.com" not in text.lower():
+                suggestions.append("Add GitHub profile.")
+
+            if "linkedin.com" not in text.lower():
                 suggestions.append("Add LinkedIn profile.")
 
+            if "certifications" not in text.lower():
+                suggestions.append("Add Certifications.")
+
+            if "internship" not in text.lower():
+                suggestions.append("Add Internship Experience.")
+
             score = min(score, 100)
+            ats_score = min(score + 10, 100)
+
+            if score >= 90:
+                strength = "Excellent"
+
+            elif score >= 75:
+                strength = "Good"
+
+            elif score >= 60:
+                strength = "Average"
+
+            else:
+                strength = "Needs Improvement"
+
+            jobs = []
+
+            if "python" in text.lower():
+                jobs.append("Python Developer")
+
+            if "html" in text.lower() or "css" in text.lower() or "javascript" in text.lower():
+                jobs.append("Frontend Developer")
+
+            if "flask" in text.lower():
+                jobs.append("Backend Developer")
+
+            if "figma" in text.lower():
+                jobs.append("UI/UX Designer")
+
+            if "machine learning" in text.lower():
+                jobs.append("Machine Learning Engineer")
+
+            if "data science" in text.lower():
+                jobs.append("Data Analyst")
+
+            global latest_report
+
+            latest_report = {
+                "score": score,
+                "ats_score": ats_score,
+                "strength": strength,
+                "analysis": analysis,
+                "suggestions": suggestions,
+                "jobs": jobs
+            }
+
+            session["score"] = score
+            session["ats_score"] = ats_score
+            session["strength"] = strength
+            session["analysis"] = analysis
+            session["suggestions"] = suggestions
+            session["jobs"] = jobs
+
+            report = ResumeReport(
+                user_id=1,
+                filename=file.filename,
+                score=score,
+                ats_score=ats_score,
+                strength=strength
+            )
+
+            db.session.add(report)
+            db.session.commit()
 
             return render_template(
                 "analysis.html",
                 analysis=analysis,
                 score=score,
-                suggestions=suggestions
+                ats_score=ats_score,
+                strength=strength,
+                suggestions=suggestions,
+                jobs=jobs
             )
 
         except Exception as e:
             return f"❌ Error: {e}"
 
     return render_template("resume.html")
+
+@app.route("/download_report")
+def download_report():
+
+    global latest_report
+
+    pdf = SimpleDocTemplate("Resume_Report.pdf")
+
+    styles = getSampleStyleSheet()
+
+    story = []
+
+    story.append(Paragraph("<b>PlacementPro-AI Resume Report</b>", styles["Title"]))
+
+    story.append(Paragraph(f"Resume Score: {latest_report['score']}/100", styles["Normal"]))
+
+    story.append(Paragraph(f"ATS Score: {latest_report['ats_score']}/100", styles["Normal"]))
+
+    story.append(Paragraph(f"Resume Strength: {latest_report['strength']}", styles["Normal"]))
+
+    story.append(Paragraph("<br/><b>Analysis</b>", styles["Heading2"]))
+
+    for item in latest_report["analysis"]:
+        story.append(Paragraph(item, styles["Normal"]))
+
+    story.append(Paragraph("<br/><b>Suggestions</b>", styles["Heading2"]))
+
+    for item in latest_report["suggestions"]:
+        story.append(Paragraph(item, styles["Normal"]))
+
+    story.append(Paragraph("<br/><b>Recommended Jobs</b>", styles["Heading2"]))
+
+    for item in latest_report["jobs"]:
+        story.append(Paragraph(item, styles["Normal"]))
+
+    pdf.build(story)
+
+    return send_file(
+        "Resume_Report.pdf",
+        as_attachment=True
+    )
+
+@app.route("/resume_history")
+def resume_history():
+
+    reports = ResumeReport.query.order_by(
+        ResumeReport.upload_date.desc()
+    ).all()
+
+    return render_template(
+        "resume_history.html",
+        reports=reports
+    )
+
+@app.route("/charts")
+def charts():
+
+    return render_template(
+        "charts.html",
+        score=session.get("score", 0),
+        ats_score=session.get("ats_score", 0)
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

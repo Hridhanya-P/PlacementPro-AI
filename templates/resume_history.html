@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Resume History{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/resume_history.css') }}">
+
+<div class="history-container">
+
+<h1 class="history-title">
+📜 Resume History
+</h1>
+
+<table class="history-table">
+
+<tr>
+
+<th>Resume</th>
+
+<th>Score</th>
+
+<th>ATS</th>
+
+<th>Strength</th>
+
+<th>Date</th>
+
+</tr>
+
+{% for report in reports %}
+
+<tr>
+
+<td>{{ report.filename }}</td>
+
+<td>{{ report.score }}/100</td>
+
+<td>{{ report.ats_score }}/100</td>
+
+<td>{{ report.strength }}</td>
+
+<td>{{ report.upload_date.strftime("%d-%m-%Y") }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

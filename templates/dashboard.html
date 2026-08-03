@@ -25,41 +25,91 @@
     <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
     </div>
 
-    <a href="{{ url_for('progress') }}">
-    <button>View DSA Progress</button>
-    </a>
-
-    <a href="{{ url_for('resume') }}">
-    <button>Resume Analyzer</button>
-    </a>
-
     <h1>Welcome, {{ name }} 👋</h1>
 
     <p>Your AI Placement Companion</p>
 
+    <div class="quick-stats">
+
+        <div>
+            📈 Last Resume : {{ average }}%
+        </div>
+
+        <div>
+            📄 Uploads : {{ uploads }}
+        </div>
+
+        <div>
+            🎯 Best ATS : {{ best_ats }}%
+        </div>
+
+    </div>
+
     <div class="cards">
 
         <div class="card">
-            🔥
+            <i class="fas fa-fire card-icon"></i>
             <h2>{{ completed }}</h2>
             <p>Completed Topics</p>
         </div>
 
         <div class="card">
-            ⭐
+            <i class="fas fa-star card-icon"></i>
             <h2>{{ xp }}</h2>
             <p>XP</p>
         </div>
 
         <div class="card">
-            🏆
+            <i class="fas fa-trophy card-icon"></i>
             <h2>{{ level }}</h2>
             <p>Level</p>
         </div>
 
+        <div class="card">
+            <i class="fas fa-file-alt card-icon"></i>
+            <h2>{{ uploads }}</h2>
+            <p>Resume Uploads</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-chart-bar card-icon"></i>
+            <h2>{{ average }}%</h2>
+            <p>Average Score</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-bullseye card-icon"></i>
+            <h2>{{ best_ats }}%</h2>
+            <p>Best ATS</p>
+        </div>
+
+    </div>
+
+    <div class="actions">
+
+        <a href="{{ url_for('progress') }}" class="action-btn">
+            🎯 DSA Progress
+        </a>
+
+        <a href="{{ url_for('resume') }}" class="action-btn">
+            📄 Resume Analyzer
+        </a>
+
+        <a href="{{ url_for('resume_history') }}" class="action-btn">
+            📜 Resume History
+        </a>
+
+        <a href="{{ url_for('charts') }}" class="action-btn">
+            📊 Analytics
+        </a>
+
     </div>
 
 </div>
+
+<footer>
+    PlacementPro AI © 2026 | Built with Flask & Python
+</footer>
 
 </body>
 

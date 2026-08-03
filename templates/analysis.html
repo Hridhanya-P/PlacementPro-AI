@@ -9,10 +9,19 @@ href="{{ url_for('static', filename='css/analysis.css') }}">
 
 <div class="analysis-box">
 
-    <div class="score-card">
-        <h2>Resume Score</h2>
-        <h1>{{ score }}/100</h1>
+    <h2>Resume Score</h2>
+
+    <div class="circle" style="--score: {{ score }};">
+        <div class="inner-circle">
+            {{ score }}%
+        </div>
     </div>
+
+    <h2>ATS Score</h2>
+    <h3>{{ ats_score }}/100</h3>
+
+    <h2>Resume Strength</h2>
+    <h3>{{ strength }}</h3>
 
     <div class="progress-bar">
         <div class="progress" style="width: {{ score }}%;">
@@ -36,6 +45,36 @@ href="{{ url_for('static', filename='css/analysis.css') }}">
     {% for suggestion in suggestions %}
         <div class="bad">{{ suggestion }}</div>
     {% endfor %}
+
+    <h2>💼 Recommended Jobs</h2>
+
+    <div class="jobs-container">
+
+        {% for job in jobs %}
+            <div class="job-card">
+                {{ job }}
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div style="text-align:center; margin-top:30px;">
+        <a href="{{ url_for('download_report') }}" class="download-btn">
+            ⬇ Download Report
+        </a>
+    </div>
+
+    <div class="bottom-buttons">
+
+        <a href="{{ url_for('resume_history') }}" class="history-btn">
+            📜 View Resume History
+        </a>
+
+        <a href="{{ url_for('charts') }}" class="analytics-btn">
+            📊 View Analytics
+        </a>
+
+    </div>
 
 </div>
 

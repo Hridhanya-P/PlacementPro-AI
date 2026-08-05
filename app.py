@@ -249,57 +249,59 @@ def resume():
 
             text = text.upper()
 
-            skills = [
-                "Python",
-                "Java",
-                "C",
-                "C++",
-                "HTML",
-                "CSS",
-                "JavaScript",
-                "React",
-                "Flask",
-                "SQL",
-                "Git",
-                "GitHub",
-                "Figma",
-                "Machine Learning",
-                "Data Science"
-            ]
+            skills = {
+                "Python": 8,
+                "Java": 8,
+                "C": 5,
+                "C++": 5,
+                "HTML": 4,
+                "CSS": 4,
+                "JavaScript": 6,
+                "React": 8,
+                "Flask": 8,
+                "SQL": 8,
+                "Git": 5,
+                "GitHub": 6,
+                "Figma": 5,
+                "Machine Learning": 10,
+                "Data Science": 10
+            }
 
             score = 0
             analysis = []
 
-            for skill in skills:
+            for skill, marks in skills.items():
                 if skill.lower() in text.lower():
-                    analysis.append(f"✅ {skill} Found")
-                    score += 5
+                    analysis.append(f"✅ {skill} Found (+{marks})")
+                    score += marks
                 else:
                     analysis.append(f"❌ {skill} Missing")
 
-            sections = [
-                "PROJECTS",
-                "INTERNSHIP",
-                "CERTIFICATIONS",
-                "EDUCATION",
-                "SKILLS",
-                "SUMMARY"
-            ]
+            sections = {
+                "PROJECTS": 10,
+                "INTERNSHIP": 10,
+                "CERTIFICATIONS": 6,
+                "EDUCATION": 8,
+                "SKILLS": 8,
+                "SUMMARY": 5
+            }
 
-            for section in sections:
+            for section, marks in sections.items():
                 if section in text.upper():
-                    analysis.append(f"✅ {section.title()} Section Found")
-                    score += 5
+                    analysis.append(f"✅ {section.title()} Found (+{marks})")
+                    score += marks
                 else:
-                    analysis.append(f"❌ {section.title()} Section Missing")
+                    analysis.append(f"❌ {section.title()} Missing")
 
             if "github.com" in text.lower():
-                analysis.append("✅ GitHub Profile Found")
+                analysis.append("✅ GitHub Profile Found (+6)")
+                score += 6
             else:
                 analysis.append("❌ GitHub Profile Missing")
 
             if "linkedin.com" in text.lower():
-                analysis.append("✅ LinkedIn Profile Found")
+                analysis.append("✅ LinkedIn Profile Found (+6)")
+                score += 6
             else:
                 analysis.append("❌ LinkedIn Profile Missing")
 
@@ -329,8 +331,14 @@ def resume():
             if "internship" not in text.lower():
                 suggestions.append("Add Internship Experience.")
 
-            score = min(score, 100)
-            ats_score = min(score + 10, 100)
+            max_score = 113   # Total possible marks
+
+            score = int((score / max_score) * 100)
+
+            if score > 100:
+                score = 100
+
+            ats_score = min(score + 5, 100)
 
             if score >= 90:
                 strength = "Excellent"

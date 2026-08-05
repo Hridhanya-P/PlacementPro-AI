@@ -18,6 +18,8 @@ UPLOAD_FOLDER = "uploads"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 db.init_app(app)
 
 with app.app_context():
@@ -69,6 +71,10 @@ def register():
 
 @app.route("/dashboard")
 def dashboard():
+
+    # If user is not logged in, redirect to login page
+    if "user_name" not in session:
+        return redirect(url_for("login"))
 
     completed = Progress.query.filter_by(completed=True).count()
     xp = completed * 100

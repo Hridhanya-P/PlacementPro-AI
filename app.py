@@ -9,7 +9,10 @@ from models import db, User, Progress, ResumeReport
 
 app = Flask(__name__)
 latest_report = {}
-app.secret_key = "placementpro_secret"
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "placementpro_secret"
+)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///placementpro.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -25,7 +28,46 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-    if Progress.query.count() == 0:
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]   
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and check_password_hash(user.password, password):
+            session["user_id"] = user.id
+            session["user_name"] = user.name
+            return redirect(url_for("dashboard"))
+
+        return "Invalid Email or Password!"
+
+    return render_template("login.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    if request.method == "POST":
+
+        name = request.form["name"]
+        email = request.form["email"]
+        password = generate_password_hash(request.form["password"])
+
+        new_user = User(
+            name=name,
+            email=email,
+            password=password
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
         topics = [
             "Arrays",
             "Strings",
@@ -82,52 +124,12 @@ with app.app_context():
         for topic in topics:
             db.session.add(
                 Progress(
-                    user_id=1,
+                    user_id=new_user.id,
                     topic=topic,
                     completed=False
                 )
             )
 
-        db.session.commit()
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-
-    if request.method == "POST":
-
-        email = request.form["email"]
-        password = request.form["password"]   
-
-        user = User.query.filter_by(email=email).first()
-
-        if user and check_password_hash(user.password, password):
-            session["user_name"] = user.name
-            return redirect(url_for("dashboard"))
-
-        return "Invalid Email or Password!"
-
-    return render_template("login.html")
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-
-    if request.method == "POST":
-
-        name = request.form["name"]
-        email = request.form["email"]
-        password = generate_password_hash(request.form["password"])
-
-        new_user = User(
-            name=name,
-            email=email,
-            password=password
-        )
-
-        db.session.add(new_user)
         db.session.commit()
 
         return redirect(url_for("login"))
@@ -138,16 +140,24 @@ def register():
 def dashboard():
 
     # If user is not logged in, redirect to login page
-    if "user_name" not in session:
+    if "user_id" not in session:
         return redirect(url_for("login"))
 
-    completed = Progress.query.filter_by(completed=True).count()
+    completed = Progress.query.filter_by(
+        user_id=session["user_id"],
+        completed=True
+    ).count()
+
     xp = completed * 100
     level = (xp // 500) + 1
 
-    uploads = ResumeReport.query.count()
+    uploads = ResumeReport.query.filter_by(
+        user_id=session["user_id"]
+    ).count()
 
-    reports = ResumeReport.query.all()
+    reports = ResumeReport.query.filter_by(
+        user_id=session["user_id"]
+    ).all()
 
     if uploads > 0:
         average = sum(r.score for r in reports) // uploads
@@ -167,13 +177,9 @@ def dashboard():
         best_ats=best_ats
     )
 
-@app.route("/check")
-def check():
-    return f"Progress rows: {Progress.query.count()}"
-
 @app.route("/logout")
 def logout():
-    session.pop("user_name", None)
+    session.clear()
     return redirect(url_for("login"))
 
 @app.route("/progress")
@@ -182,7 +188,7 @@ def progress():
     if "user_name" not in session:
         return redirect(url_for("login"))
 
-    topics = Progress.query.filter_by(user_id=1).all()
+    topics = Progress.query.filter_by(user_id=session["user_id"]).all()
 
     return render_template(
         "progress.html",
@@ -192,7 +198,10 @@ def progress():
 @app.route("/complete/<int:id>")
 def complete(id):
 
-    topic = Progress.query.get_or_404(id)
+    topic = Progress.query.filter_by(
+        id=id,
+        user_id=session["user_id"]
+    ).first_or_404()
 
     topic.completed = True
 
@@ -202,6 +211,9 @@ def complete(id):
 
 @app.route("/resume", methods=["GET", "POST"])
 def resume():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
     if request.method == "POST":
 
@@ -362,7 +374,7 @@ def resume():
             session["jobs"] = jobs
 
             report = ResumeReport(
-                user_id=1,
+                user_id=session["user_id"],
                 filename=file.filename,
                 score=score,
                 ats_score=ats_score,
@@ -389,6 +401,9 @@ def resume():
 
 @app.route("/download_report")
 def download_report():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
     global latest_report
 
@@ -431,7 +446,12 @@ def download_report():
 @app.route("/resume_history")
 def resume_history():
 
-    reports = ResumeReport.query.order_by(
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    reports = ResumeReport.query.filter_by(
+        user_id=session["user_id"]
+    ).order_by(
         ResumeReport.upload_date.desc()
     ).all()
 
@@ -442,6 +462,9 @@ def resume_history():
 
 @app.route("/charts")
 def charts():
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
     return render_template(
         "charts.html",

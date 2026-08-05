@@ -3,3 +3,6 @@ __pycache__/
 .env
 venv/
 instance/
+
+uploads/
+*.db

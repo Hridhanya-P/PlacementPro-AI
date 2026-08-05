@@ -1,46 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
+{% block title %}Dashboard{% endblock %}
 
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Dashboard</title>
-
-    <link rel="stylesheet"
-      href="{{ url_for('static', filename='css/global.css') }}">
-
-    <link rel="stylesheet"
+{% block css %}
+<link rel="stylesheet"
       href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
 
-</head>
-
-<body>
+{% block content %}
 
 <div class="dashboard">
 
     <div class="top-bar">
-    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
     </div>
-
+    
     <h1>Welcome, {{ name }} 👋</h1>
 
     <p>Your AI Placement Companion</p>
 
     <div class="quick-stats">
 
-        <div>
-            📈 Last Resume : {{ average }}%
+        <div class="quick-stat">
+            📈 Last Resume: {{ average }}%
         </div>
 
-        <div>
-            📄 Uploads : {{ uploads }}
+        <div class="quick-stat">
+            📄 Uploads: {{ uploads }}
         </div>
 
-        <div>
-            🎯 Best ATS : {{ best_ats }}%
+        <div class="quick-stat">
+            🎯 Best ATS: {{ best_ats }}%
         </div>
 
     </div>
@@ -49,7 +39,7 @@
 
         <div class="card">
             <i class="fas fa-fire card-icon"></i>
-            <h2>{{ completed }}</h2>
+            <h2>{{ completed }}/50</h2>
             <p>Completed Topics</p>
         </div>
 
@@ -111,6 +101,4 @@
     PlacementPro AI © 2026 | Built with Flask & Python
 </footer>
 
-</body>
-
-</html>
+{% endblock %}

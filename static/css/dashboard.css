@@ -17,7 +17,7 @@
     width:240px;
     min-height:180px;
     max-width:220px;
-    height:180px;
+    height:190px;
 
     background:white;
     border-radius:18px;
@@ -109,22 +109,23 @@
 
 .action-btn:hover{
     background:#1d4ed8;
-    transform:translateY(-4px);
-    box-shadow:0 10px 25px rgba(37,99,235,.35);
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(37,99,235,.35);
 }
 
 .logout-btn{
     background:#ef4444;
     color:white;
-    padding:12px 25px;
+    padding:12px 28px;
     border-radius:10px;
+    font-weight:bold;
     text-decoration:none;
-    font-weight:600;
     transition:.3s;
 }
 
 .logout-btn:hover{
     background:#dc2626;
+    transform:translateY(-2px);
 }
 
 footer{
@@ -150,3 +151,70 @@ footer{
     margin-bottom:15px;
 }
 
+.card:nth-child(1) .card-icon{
+    color:#ff6b35;
+}
+
+.card:nth-child(2) .card-icon{
+    color:#f4b400;
+}
+
+.card:nth-child(3) .card-icon{
+    color:#f59e0b;
+}
+
+.card:nth-child(4) .card-icon{
+    color:#8b5cf6;
+}
+
+.card:nth-child(5) .card-icon{
+    color:#10b981;
+}
+
+.card:nth-child(6) .card-icon{
+    color:#ef4444;
+}
+
+.quick-stats{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin:30px 0 55px;
+}
+
+.quick-stat{
+    background:white;
+    padding:12px 22px;
+    border-radius:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    font-size:18px;
+    font-weight:600;
+}
+
+.card{
+    transition:0.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 20px 45px rgba(37,99,235,.18);
+}
+
+
+.dashboard{
+    animation:fadeIn .6s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}

@@ -93,7 +93,7 @@ Completed topics contribute to the user's XP and level.
 
 # 🛠 Tech Stack
 
-| Category | Technologies |
+| **Category** | **Technologies** |
 |---|---|
 | Frontend | HTML5, CSS3, JavaScript |
 | Backend | Python, Flask |
@@ -101,7 +101,6 @@ Completed topics contribute to the user's XP and level.
 | ORM | Flask-SQLAlchemy |
 | Resume Processing | PDFPlumber |
 | PDF Reports | ReportLab |
-| Charts | Chart.js |
 | Authentication | Werkzeug |
 | Deployment | Render |
 | Version Control | Git & GitHub |
